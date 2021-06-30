@@ -17,13 +17,13 @@ const User = sequelize.define(
 const Song = sequelize.define("Song", {
   name: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
-  song_id: {
+  artist_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: "songs",
-      key: "id",
+      model: "Artists", //Model is referring to table
+      key: "id", //Key refers to table column
     },
   },
 });
@@ -33,14 +33,6 @@ const Artist = sequelize.define("Artist", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-
-  artist_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: "artists",
-      key: "id",
-    },
-  },
 });
 
 const run = async () => {
@@ -49,15 +41,32 @@ const run = async () => {
     await sequelize.sync();
     console.log("connected");
 
-    const MPeople = await Song.create({ name: "Moving On Up" });
-    const HeatherSmall = await User.create({
+    const HeatherSmall = await Artist.create({
       name: "Heather Small",
-      location_id: MPeople.id,
+    });
+    const JheneAiko = await Artist.create({
+      name: "Jhene Aiko",
+    });
+    const MarcRebilliet = await Artist.create({
+      name: "Marc Rebilliet",
     });
 
-    const song = await song.findOne({
+    const MPeople = await Song.create({
+      name: "Moving On Up",
+      artist_id: HeatherSmall.id,
+    });
+    const Happiness = await Song.create({
+      name: "Happiness Over Everything",
+      artist_id: JheneAiko.id,
+    });
+    const Flamingo = await Song.create({
+      name: "I'm a flamingo",
+      artist_id: MarcRebilliet.id,
+    });
+
+    const song = await Song.findOne({
       where: {
-        location_id: 1,
+        id: 1,
       },
     });
 
